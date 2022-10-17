@@ -110,18 +110,18 @@
                 </thead>
 
                 <tbody>
-                    <tr th:each="log, i : ${member.memberLoginHistoryList}">
+                    <tr th:each="i : ${#numbers.sequence(member.memberLoginHistoryList.size() -1, 0, -1)}">
                         <td>
-                            <p th:text="${i.index + 1}"></p>
+                            <p th:text="${member.memberLoginHistoryList[i].id}"></p>
                         </td>
                         <td>
-                            <p th:text="${log.regDt}"></p>
+                            <p th:text="${member.memberLoginHistoryList[i].regDt}"></p>
                         </td>
                         <td>
-                            <p th:text="${log.ipAddr}"></p>
+                            <p th:text="${member.memberLoginHistoryList[i].ipAddr}"></p>
                         </td>
                         <td>
-                            <p th:text="${log.userAgent}"></p>
+                            <p th:text="${member.memberLoginHistoryList[i].userAgent}"></p>
                         </td>
                     </tr>
                 </tbody>
