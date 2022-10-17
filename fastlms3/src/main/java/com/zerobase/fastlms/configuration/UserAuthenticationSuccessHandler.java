@@ -32,12 +32,19 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
         System.out.println("userId = " + userId);
 
+        //로그인 히스토리 저장
         memberLoginHistoryRepository.save(MemberLoginHistory.builder()
                 .ipAddr(clientIp)
                 .regDt(LocalDateTime.now())
                 .userAgent(userAgent)
                 .userId(userId)
                 .build());
+
+        //마지막 로그인 일자 저장
+        memberRepository.findById(userId).ifPresent(e -> {
+            e.setLastLoginDt(LocalDateTime.now());
+            memberRepository.save(e);
+        });
 
         super.onAuthenticationSuccess(request, response, authentication);
     }
