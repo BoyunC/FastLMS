@@ -91,19 +91,43 @@
                         </div>
                     </td>
                 </tr>
-
-
             </tbody>
         </table>
 
         <div>
             <a href="list.do"> 목록 </a>
-
         </div>
 
+        <div class="detail">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>로그인 일자</th>
+                        <th>접속 IP</th>
+                        <th>접속 UserAgent</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="log, i : ${member.memberLoginHistoryList}">
+                        <td>
+                            <p th:text="${i.index + 1}"></p>
+                        </td>
+                        <td>
+                            <p th:text="${log.regDt}"></p>
+                        </td>
+                        <td>
+                            <p th:text="${log.ipAddr}"></p>
+                        </td>
+                        <td>
+                            <p th:text="${log.userAgent}"></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
-
-
 </body>
 </html>

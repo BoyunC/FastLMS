@@ -11,6 +11,7 @@ import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
 import com.zerobase.fastlms.member.exception.MemberStopUserException;
 import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
+import com.zerobase.fastlms.member.repository.MemberLoginHistoryRepository;
 import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.MemberService;
 import com.zerobase.fastlms.util.PasswordUtils;
@@ -24,7 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,10 @@ public class MemberServiceImpl implements MemberService {
     
     private final MemberRepository memberRepository;
     private final MailComponents mailComponents;
-    
     private final MemberMapper memberMapper;
+
+    private final MemberLoginHistoryRepository memberLoginHistoryRepository;
+
     
     /**
      * 회원 가입
@@ -146,15 +148,20 @@ public class MemberServiceImpl implements MemberService {
     
     @Override
     public MemberDto detail(String userId) {
-        
+
         Optional<Member> optionalMember  = memberRepository.findById(userId);
         if (!optionalMember.isPresent()) {
             return null;
         }
-        
+
         Member member = optionalMember.get();
-        
-        return MemberDto.of(member);
+        MemberDto memberDto = MemberDto.of(member);
+
+        memberLoginHistoryRepository.findByUserId(member.getUserId()).ifPresent(e -> {
+            memberDto.setMemberLoginHistoryList(e);
+        });
+
+        return memberDto;
     }
     
     @Override

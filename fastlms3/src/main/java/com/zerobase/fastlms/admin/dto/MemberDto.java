@@ -1,6 +1,7 @@
 package com.zerobase.fastlms.admin.dto;
 
 import com.zerobase.fastlms.member.entity.Member;
+import com.zerobase.fastlms.member.entity.MemberLoginHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +41,8 @@ public class MemberDto {
     //추가컬럼
     long totalCount;
     long seq;
-    
+
+    List<MemberLoginHistory> memberLoginHistoryList;
     
     public static MemberDto of(Member member) {
         
